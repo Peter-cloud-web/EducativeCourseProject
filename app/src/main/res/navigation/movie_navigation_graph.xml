@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_navigation_graph"
-    app:startDestination="@id/reviewsFragment">
+    app:startDestination="@id/movieTrailerFragment">
 
     <fragment
         android:id="@+id/moviesFragment"
@@ -25,4 +25,9 @@
         android:name="com.example.educativecourseproject.fragments.ReviewsFragment"
         android:label="fragment_reviews"
         tools:layout="@layout/fragment_reviews" />
+    <fragment
+        android:id="@+id/movieTrailerFragment"
+        android:name="com.example.educativecourseproject.fragments.MovieTrailerFragment"
+        android:label="MovieTrailerFragment"
+        tools:layout="@layout/fragment_movie_trailer"/>
 </navigation>
