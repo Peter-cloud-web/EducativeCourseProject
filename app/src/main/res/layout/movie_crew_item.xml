@@ -10,7 +10,6 @@
         android:layout_width="76dp"
         android:layout_height="76dp"
         android:layout_margin="5dp"
-        android:src="@drawable/profile"
         app:civ_border_color="#2FFF00"
         app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
