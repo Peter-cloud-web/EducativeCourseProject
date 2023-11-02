@@ -40,7 +40,7 @@
             app:destination="@id/movieTrailerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchMoviesFragment2"
+        android:id="@+id/searchMoviesFragment"
         android:name="com.example.educativecourseproject.ui.fragments.SearchMovieFragment"
         android:label="fragment_search_movie"
         tools:layout="@layout/fragment_search_movie" >
