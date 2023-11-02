@@ -1,4 +1,4 @@
-package com.example.educativecourseproject.fragments
+package com.example.educativecourseproject.ui.fragments
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

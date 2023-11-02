@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/movie_navigation_graph"
+    app:startDestination="@id/moviesFragment">
+    <fragment
+        android:id="@+id/favouriteMovieFragment2"
+        android:name="com.example.educativecourseproject.ui.fragments.FavouriteMovieFragment"
+        android:label="fragment_favourite_movie"
+        tools:layout="@layout/fragment_favourite_movie" >
+        <action
+            android:id="@+id/action_favouriteMovieFragment2_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieTrailerFragment"
+        android:name="com.example.educativecourseproject.ui.fragments.MovieTrailerFragment"
+        android:label="MovieTrailerFragment"
+        tools:layout="@layout/fragment_movie_trailer"/>
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.example.educativecourseproject.ui.fragments.MoviesFragment"
+        android:label="MoviesFragment"
+        tools:layout="@layout/fragment_movies">
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.educativecourseproject.ui.fragments.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_reviewsFragment"
+            app:destination="@id/reviewsFragment" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_movieTrailerFragment"
+            app:destination="@id/movieTrailerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchMovieFragment2"
+        android:name="com.example.educativecourseproject.ui.fragments.SearchMovieFragment"
+        android:label="fragment_search_movie"
+        tools:layout="@layout/fragment_search_movie" >
+        <action
+            android:id="@+id/action_searchMovieFragment2_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewsFragment"
+        android:name="com.example.educativecourseproject.ui.fragments.ReviewsFragment"
+        android:label="fragment_reviews"
+        tools:layout="@layout/fragment_reviews" />
+    <fragment
+        android:id="@+id/tvShowsFragment"
+        android:name="com.example.educativecourseproject.ui.fragments.TvShowsFragment"
+        android:label="fragment_tv_shows"
+        tools:layout="@layout/fragment_tv_shows" >
+        <action
+            android:id="@+id/action_tvShowsFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+</navigation>
