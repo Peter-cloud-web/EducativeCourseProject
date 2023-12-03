@@ -1,6 +1,6 @@
-package com.example.domain.entities
+package com.example.domain.entities.similarMovies
 
-data class Result(
+data class  Result(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
