@@ -1,4 +1,4 @@
-package com.example.domain.entities.movieReviews
+package com.example.educativecourseproject.domain.entities.movieReviews
 
 data class MovieReviewResponse(
     val id: Int,

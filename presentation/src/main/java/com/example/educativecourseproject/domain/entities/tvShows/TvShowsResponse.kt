@@ -1,4 +1,4 @@
-package com.example.domain.entities.tvShows
+package com.example.educativecourseproject.domain.entities.tvShows
 
 data class TvShowsResponse(
     val page: Int,

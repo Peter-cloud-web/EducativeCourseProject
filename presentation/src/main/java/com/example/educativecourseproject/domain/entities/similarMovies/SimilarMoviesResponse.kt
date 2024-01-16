@@ -1,4 +1,4 @@
-package com.example.domain.entities.similarMovies
+package com.example.educativecourseproject.domain.entities.similarMovies
 
 data class SimilarMoviesResponse(
     val page: Int,

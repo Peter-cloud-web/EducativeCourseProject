@@ -1,6 +1,6 @@
-package com.example.domain.entities.popularMovies
+package com.example.educativecourseproject.domain.entities.topRatedMovies
 
-data class PopularMovie(
+data class TopRatedMovie(
     val backdrop_path: String?,
     val id: Int?,
     val overview: String?,

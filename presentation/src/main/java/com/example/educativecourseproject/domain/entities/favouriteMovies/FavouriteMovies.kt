@@ -1,4 +1,4 @@
-package com.example.domain.entities.favouriteMovies
+package com.example.educativecourseproject.domain.entities.favouriteMovies
 
 data class FavouriteMovies(
 

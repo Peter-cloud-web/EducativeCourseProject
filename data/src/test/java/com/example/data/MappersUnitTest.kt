@@ -1,7 +1,7 @@
 package com.example.data
 
-import com.example.domain.dto.PopularMovieDto
-import com.example.domain.entities.popularMovies.PopularMovie
+import com.example.educativecourseproject.domain.dto.PopularMovieDto
+import com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie
 import com.example.mappers.Mappers
 import com.example.mappers.Mappers.toPopularMovie
 import org.junit.Test
@@ -16,7 +16,7 @@ import org.junit.Assert.*
 class MappersUnitTest {
     @Test
     fun testPopularMovieDtoToPopularMovie() {
-        val dto = PopularMovieDto(
+        val dto = com.example.educativecourseproject.domain.dto.PopularMovieDto(
             adult = true,
             backdrop_path = "backdrop.jpg",
             genre_ids = null,
@@ -33,15 +33,16 @@ class MappersUnitTest {
             vote_count = null
         )
 
-        val expectedMovie = PopularMovie(
-            backdrop_path = "backdrop.jpg",
-            overview = "A thrilling movie...",
-            poster_path = "poster.jpg",
-            id = 123,
-            title = "The Movie Title",
-            vote_average = 8.5,
-            page = 1
-        )
+        val expectedMovie =
+            com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie(
+                backdrop_path = "backdrop.jpg",
+                overview = "A thrilling movie...",
+                poster_path = "poster.jpg",
+                id = 123,
+                title = "The Movie Title",
+                vote_average = 8.5,
+                page = 1
+            )
 
         val actualMovie = dto.toPopularMovie()
 

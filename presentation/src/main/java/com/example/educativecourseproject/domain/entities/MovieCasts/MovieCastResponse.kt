@@ -1,4 +1,4 @@
-package com.example.domain.entities.MovieCasts
+package com.example.educativecourseproject.domain.entities.MovieCasts
 
 data class MovieCastResponse(
     val cast: List<Cast>,

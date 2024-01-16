@@ -1,4 +1,4 @@
-package com.example.domain.dto
+package com.example.educativecourseproject.domain.dto
 
 import kotlinx.serialization.SerialName
 import java.io.Serializable

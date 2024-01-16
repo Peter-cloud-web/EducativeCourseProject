@@ -1,4 +1,4 @@
-package com.example.domain.entities.upcomingMovies
+package com.example.educativecourseproject.domain.entities.upcomingMovies
 
 data class UpcomingMovie(
     val backdrop_path: String?,
