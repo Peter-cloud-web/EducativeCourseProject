@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.example.domain'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.domain"
@@ -30,8 +30,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
 }
+
 
 dependencies {
 
