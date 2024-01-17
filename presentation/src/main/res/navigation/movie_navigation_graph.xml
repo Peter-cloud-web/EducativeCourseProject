@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_navigation_graph"
-    app:startDestination="@id/tvShowsFragment">
+    app:startDestination="@id/moviesFragment">
     <fragment
         android:id="@+id/favouriteMovieFragment2"
         android:name="com.example.educativecourseproject.presentation.ui.fragments.FavouriteMovieFragment"

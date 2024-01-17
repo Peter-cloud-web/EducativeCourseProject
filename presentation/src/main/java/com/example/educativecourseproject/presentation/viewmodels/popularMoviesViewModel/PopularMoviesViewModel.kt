@@ -1,6 +1,5 @@
 package com.example.cinemaxv3.viewmodels.popularMoviesViewModel
 
-import Mappers.toMovie
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -8,6 +7,7 @@ import com.bumptech.glide.load.HttpException
 import com.example.cinemaxv3.models.Movie
 import com.example.domain.use_cases.popularMovies_usecase.PopularMoviesUseCase
 import com.example.domain.repository.RemoteMoviesRepository
+import com.example.educativecourseproject.data.mappers.Mappers.toPopularMovie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +25,7 @@ class PopularMoviesViewModel @Inject constructor(
 
     suspend fun getTopRatedMovie(): List<Movie>? =
         repository.getPopularMovies(1).data?.results?.map {
-            it.toMovie()
+            it.toPopularMovie()
         }
 
     init {

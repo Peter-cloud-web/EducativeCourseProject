@@ -31,7 +31,9 @@ import com.example.cinemaxv3.viewmodels.topRatedMovieViewModel.TopRatedMovieView
 import com.example.cinemaxv3.viewmodels.upComingMoviesViewModel.UpComingMoviesViewModel
 import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentMoviesBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+@AndroidEntryPoint
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private lateinit var popularMovieAdapter: PopularMovieAdapter
     private lateinit var topRatedMoviesAdapter: TopRatedMoviesAdapter
@@ -52,14 +54,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         val binding = FragmentMoviesBinding.bind(view)
         val imageLoader = ImageLoader(requireContext())
 
-
-
         initMembers(imageLoader)
         checkNetworkConnectivity(binding)
         setUpViews(binding)
         fetchMovies(binding)
         displayPopularMovie(binding)
-        recyclerViewOnClick()
+//        recyclerViewOnClick()
 
 
         val actionBar = (activity as AppCompatActivity).supportActionBar
@@ -195,57 +195,57 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
-    private fun recyclerViewOnClick() {
-
-        popularMovieAdapter.setOnItemClickListener { movie ->
-
-            with(movie) {
-                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-                    IMAGE_BASE_URL + poster_path,
-                    IMAGE_BASE_URL + backdrop_path,
-                    title.toString(),
-                    overview.toString(),
-                    vote_average.toFloat(),
-                    id
-                )
-                findNavController().navigate(action)
-            }
-        }
-
-
-        topRatedMoviesAdapter.setOnItemClickListener { topRatedMovies ->
-
-            with(topRatedMovies) {
-
-                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-                    IMAGE_BASE_URL + poster_path,
-                    IMAGE_BASE_URL + backdrop_path,
-                    title.toString(),
-                    overview.toString(),
-                    vote_average.toFloat(),
-                    id
-                )
-                findNavController().navigate(action)
-            }
-
-        }
-
-        upComingMoviesAdapter.setOnItemClickListener { upComingMovies ->
-
-            with(upComingMovies) {
-
-                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-                    IMAGE_BASE_URL + poster_path,
-                    IMAGE_BASE_URL + backdrop_path,
-                    title.toString(),
-                    overview.toString(),
-                    vote_average.toFloat(),
-                    id
-                )
-                findNavController().navigate(action)
-            }
-        }
-    }
+//    private fun recyclerViewOnClick() {
+//
+//        popularMovieAdapter.setOnItemClickListener { movie ->
+//
+//            with(movie) {
+//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+//                    IMAGE_BASE_URL + poster_path,
+//                    IMAGE_BASE_URL + backdrop_path,
+//                    title.toString(),
+//                    overview.toString(),
+//                    vote_average.toFloat(),
+//                    id
+//                )
+//                findNavController().navigate(action)
+//            }
+//        }
+//
+//
+//        topRatedMoviesAdapter.setOnItemClickListener { topRatedMovies ->
+//
+//            with(topRatedMovies) {
+//
+//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+//                    IMAGE_BASE_URL + poster_path,
+//                    IMAGE_BASE_URL + backdrop_path,
+//                    title.toString(),
+//                    overview.toString(),
+//                    vote_average.toFloat(),
+//                    id
+//                )
+//                findNavController().navigate(action)
+//            }
+//
+//        }
+//
+//        upComingMoviesAdapter.setOnItemClickListener { upComingMovies ->
+//
+//            with(upComingMovies) {
+//
+//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+//                    IMAGE_BASE_URL + poster_path,
+//                    IMAGE_BASE_URL + backdrop_path,
+//                    title.toString(),
+//                    overview.toString(),
+//                    vote_average.toFloat(),
+//                    id
+//                )
+//                findNavController().navigate(action)
+//            }
+//        }
+//    }
 
     private fun displayPopularMovie(binding: FragmentMoviesBinding) {
         lifecycleScope.launch {

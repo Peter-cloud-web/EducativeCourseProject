@@ -13,9 +13,10 @@ import com.example.cinemaxv3.receivers.ConnectivityObserverImpl
 import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.ActivityMainBinding
 import com.example.educativecourseproject.databinding.InternetConnectionDialogueBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
+
         internetPopup = InternetConnectionDialogueBinding.inflate(layoutInflater)
 
         connectivityDialog = Dialog(this)

@@ -1,5 +1,8 @@
 package com.example.cinemaxv3.viewmodels.topRatedMovieViewModel
 
+import android.net.http.HttpException
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
@@ -9,7 +12,6 @@ import com.example.domain.use_cases.top_rated_movies_usecase.TopRatedMoviesUseCa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
@@ -36,6 +38,7 @@ class TopRatedMovieViewModel @Inject constructor(
         }
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     private fun handleTopRatedMoviesErrors(e: Exception): String {
         return when (e) {
             is IOException -> "An unexpected error occurred: Please check Network/Internet settings"

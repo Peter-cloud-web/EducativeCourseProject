@@ -35,7 +35,7 @@ import com.example.domain.entities.model.tvShowsResponse.TvShowsResults
         TopRatedRemoteKeys::class,
         UpComingRemoteKeys::class,
         TopRatedTvShowsRemoteKeys::class],
-    version = 17, exportSchema = false
+    version = 1, exportSchema = false
 )
 @TypeConverters(ListConverter::class)
 abstract class MovieDatabase : RoomDatabase() {
