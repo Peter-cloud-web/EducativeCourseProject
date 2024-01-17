@@ -6,7 +6,7 @@
     app:startDestination="@id/tvShowsFragment">
     <fragment
         android:id="@+id/favouriteMovieFragment2"
-        android:name="com.example.educativecourseproject.ui.fragments.FavouriteMovieFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.FavouriteMovieFragment"
         android:label="fragment_favourite_movie"
         tools:layout="@layout/fragment_favourite_movie" >
         <action
@@ -15,12 +15,12 @@
     </fragment>
     <fragment
         android:id="@+id/movieTrailerFragment"
-        android:name="com.example.educativecourseproject.ui.fragments.MovieTrailerFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.MovieTrailerFragment"
         android:label="MovieTrailerFragment"
         tools:layout="@layout/fragment_movie_trailer"/>
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="com.example.educativecourseproject.ui.fragments.MoviesFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.MoviesFragment"
         android:label="MoviesFragment"
         tools:layout="@layout/fragment_movies">
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.example.educativecourseproject.ui.fragments.MovieDetailsFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.MovieDetailsFragment"
         android:label="fragment_movie_details"
         tools:layout="@layout/fragment_movie_details" >
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchMovieFragment2"
-        android:name="com.example.educativecourseproject.ui.fragments.SearchMovieFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.SearchMovieFragment"
         android:label="fragment_search_movie"
         tools:layout="@layout/fragment_search_movie" >
         <action
@@ -50,12 +50,12 @@
     </fragment>
     <fragment
         android:id="@+id/reviewsFragment"
-        android:name="com.example.educativecourseproject.ui.fragments.ReviewsFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.ReviewsFragment"
         android:label="fragment_reviews"
         tools:layout="@layout/fragment_reviews" />
     <fragment
         android:id="@+id/tvShowsFragment"
-        android:name="com.example.educativecourseproject.ui.fragments.TvShowsFragment"
+        android:name="com.example.educativecourseproject.presentation.ui.fragments.TvShowsFragment"
         android:label="fragment_tv_shows"
         tools:layout="@layout/fragment_tv_shows" >
         <action

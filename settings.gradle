@@ -14,5 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EducativeCourseProject"
 include ':presentation'
-include ':data'
-include ':domain'

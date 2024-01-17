@@ -2,8 +2,8 @@ package com.example.data
 
 import com.example.educativecourseproject.domain.dto.PopularMovieDto
 import com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie
-import com.example.mappers.Mappers
-import com.example.mappers.Mappers.toPopularMovie
+import com.example.educativecourseproject.data.mappers.Mappers
+import com.example.educativecourseproject.data.mappers.Mappers.toPopularMovie
 import org.junit.Test
 
 import org.junit.Assert.*
