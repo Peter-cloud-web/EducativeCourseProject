@@ -7,21 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemSimilarMoviesBinding
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.domain.entities.model.similarMoviesResponse.SimilarMovies
+import com.example.educativecourseproject.databinding.SimilarMoviesItemBinding
 import javax.inject.Inject
 
 class SimilarMoviesAdapter @Inject constructor(private val imageLoader: ImageLoader) :
     RecyclerView.Adapter<SimilarMoviesAdapter.SimilarMoviesViewHolder>() {
-    inner class SimilarMoviesViewHolder(val binding: ItemSimilarMoviesBinding) :
+    inner class SimilarMoviesViewHolder(val binding: SimilarMoviesItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     val similarMoviesDifferList = AsyncListDiffer(this, SimilarMoviesComparator)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimilarMoviesViewHolder {
         val binding =
-            ItemSimilarMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            SimilarMoviesItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SimilarMoviesViewHolder(binding)
     }
 

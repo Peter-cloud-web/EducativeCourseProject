@@ -1,15 +1,15 @@
 package com.example.educativecourseproject.data.mappers
 
-import com.example.educativecourseproject.domain.dto.PopularMovieDto
-import com.example.educativecourseproject.domain.dto.TopRatedMoviesDto
-import com.example.educativecourseproject.domain.dto.UpComingMoviesDto
-import com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie
-import com.example.educativecourseproject.domain.entities.topRatedMovies.TopRatedMovie
-import com.example.educativecourseproject.domain.entities.upcomingMovies.UpcomingMovie
+import com.example.cinemaxv3.models.Movie
+import com.example.cinemaxv3.models.TopRatedMovies
+import com.example.cinemaxv3.models.UpComingMovies
+import com.example.domain.movieDto.MovieDto
+import com.example.domain.movieDto.TopRatedMoviesDto
+import com.example.domain.movieDto.UpComingMoviesDto
 
 object Mappers {
-    fun com.example.educativecourseproject.domain.dto.PopularMovieDto.toPopularMovie(): com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie {
-        return com.example.educativecourseproject.domain.entities.popularMovies.PopularMovie(
+    fun MovieDto.toPopularMovie(): Movie {
+        return Movie(
             backdrop_path = backdrop_path,
             overview = overview,
             poster_path = poster_path,
@@ -20,8 +20,8 @@ object Mappers {
         )
     }
 
-    fun com.example.educativecourseproject.domain.dto.TopRatedMoviesDto.toTopRatedMovie(): com.example.educativecourseproject.domain.entities.topRatedMovies.TopRatedMovie {
-        return com.example.educativecourseproject.domain.entities.topRatedMovies.TopRatedMovie(
+    fun TopRatedMoviesDto.toTopRatedMovie(): TopRatedMovies {
+        return TopRatedMovies(
             backdrop_path = backdrop_path,
             overview = overview,
             poster_path = poster_path,
@@ -32,8 +32,8 @@ object Mappers {
         )
     }
 
-    fun com.example.educativecourseproject.domain.dto.UpComingMoviesDto.toUpComingMovies(): com.example.educativecourseproject.domain.entities.upcomingMovies.UpcomingMovie {
-        return com.example.educativecourseproject.domain.entities.upcomingMovies.UpcomingMovie(
+    fun UpComingMoviesDto.toUpComingMovies(): UpComingMovies {
+        return UpComingMovies(
             backdrop_path = backdrop_path,
             overview = overview,
             poster_path = poster_path,

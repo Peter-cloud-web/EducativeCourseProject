@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemMoviesBinding
 import com.example.cinemaxv3.models.Movie
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
+import com.example.educativecourseproject.databinding.MovieItemBinding
 import javax.inject.Inject
 
 class PopularMovieAdapter @Inject constructor(private val imageLoader: ImageLoader) :
     PagingDataAdapter<Movie, PopularMovieAdapter.PopularViewHolder>(PopularMovieModelComparator) {
     private var onMovieClickListener: ((Movie) -> Unit)? = null
 
-    inner class PopularViewHolder(val binding: ItemMoviesBinding) :
+    inner class PopularViewHolder(val binding: MovieItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularViewHolder {
-        val binding = ItemMoviesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = MovieItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PopularViewHolder(binding)
     }
 

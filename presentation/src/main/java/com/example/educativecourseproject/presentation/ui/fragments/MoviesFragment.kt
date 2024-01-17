@@ -6,17 +6,23 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import androidx.navigation.fragment.navArgs
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
+import com.bumptech.glide.Glide
 import com.example.cinemaxv3.receivers.ConnectivityObserver
 import com.example.cinemaxv3.receivers.ConnectivityObserverImpl
 import com.example.cinemaxv3.util.Constants
+import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.cinemaxv3.view.ui.adapter.PopularMovieAdapter
 import com.example.cinemaxv3.view.ui.adapter.TopRatedMoviesAdapter
 import com.example.cinemaxv3.view.ui.adapter.UpComingMoviesAdapter
@@ -24,18 +30,8 @@ import com.example.cinemaxv3.viewmodels.popularMoviesViewModel.PopularMoviesView
 import com.example.cinemaxv3.viewmodels.topRatedMovieViewModel.TopRatedMovieViewModel
 import com.example.cinemaxv3.viewmodels.upComingMoviesViewModel.UpComingMoviesViewModel
 import com.example.educativecourseproject.R
+import com.example.educativecourseproject.databinding.FragmentMoviesBinding
 import kotlinx.coroutines.launch
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MoviesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private lateinit var popularMovieAdapter: PopularMovieAdapter
     private lateinit var topRatedMoviesAdapter: TopRatedMoviesAdapter
@@ -53,7 +49,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentMovieBinding.bind(view)
+        val binding = FragmentMoviesBinding.bind(view)
         val imageLoader = ImageLoader(requireContext())
 
 
@@ -88,7 +84,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     }
 
-    private fun checkNetworkConnectivity(binding: FragmentMovieBinding) {
+    private fun checkNetworkConnectivity(binding: FragmentMoviesBinding) {
 
         lifecycleScope.launch {
             networkConnectivityObserver.observer().collect { status ->
@@ -102,7 +98,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
-    private fun fetchMovies(binding: FragmentMovieBinding) {
+    private fun fetchMovies(binding: FragmentMoviesBinding) {
         lifecycleScope.launch {
             topRatedMovieViewModel.topRatedMovieUiState.collect { uiState ->
 
@@ -182,7 +178,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
 
-    private fun setUpViews(binding: FragmentMovieBinding) {
+    private fun setUpViews(binding: FragmentMoviesBinding) {
         binding.topRatedMoviesRecyclerview.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             adapter = topRatedMoviesAdapter
@@ -204,7 +200,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         popularMovieAdapter.setOnItemClickListener { movie ->
 
             with(movie) {
-                val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment(
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
                     IMAGE_BASE_URL + poster_path,
                     IMAGE_BASE_URL + backdrop_path,
                     title.toString(),
@@ -221,7 +217,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
             with(topRatedMovies) {
 
-                val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment(
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
                     IMAGE_BASE_URL + poster_path,
                     IMAGE_BASE_URL + backdrop_path,
                     title.toString(),
@@ -238,7 +234,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
             with(upComingMovies) {
 
-                val action = MovieFragmentDirections.actionMovieFragmentToMovieDetailsFragment(
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
                     IMAGE_BASE_URL + poster_path,
                     IMAGE_BASE_URL + backdrop_path,
                     title.toString(),
@@ -251,7 +247,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
-    private fun displayPopularMovie(binding: FragmentMovieBinding) {
+    private fun displayPopularMovie(binding: FragmentMoviesBinding) {
         lifecycleScope.launch {
             val it = popularMoviesViewModel.getTopRatedMovie()
             if (it != null) {
@@ -271,12 +267,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
 
-    private fun popularMovieOnclick(id: Int, name: String?, binding: FragmentMovieBinding) {
+    private fun popularMovieOnclick(id: Int, name: String?, binding: FragmentMoviesBinding) {
         binding.btnTrailer.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt("movieId", id)
             bundle.putString("title", name)
-            findNavController().navigate(R.id.action_movieFragment_to_trailersFragment, bundle)
+            findNavController().navigate(R.id.action_moviesFragment_to_movieDetailsFragment, bundle)
         }
     }
 

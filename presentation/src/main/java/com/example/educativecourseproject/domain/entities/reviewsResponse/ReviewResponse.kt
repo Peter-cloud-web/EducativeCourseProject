@@ -1,6 +1,5 @@
 package com.example.cinemaxv3.models.responses
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,6 +16,7 @@ data class ReviewsResponse(
     @SerialName("total_results")
     val totalResults: Int
 )
+
 @Serializable
 data class Review(
     @SerialName("id")
@@ -30,6 +30,7 @@ data class Review(
     @SerialName("url")
     val url: String
 )
+
 @Serializable
 data class AuthorDetails(
     @SerialName("name")

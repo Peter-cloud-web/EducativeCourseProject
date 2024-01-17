@@ -1,60 +1,171 @@
 package com.example.educativecourseproject.presentation.ui.fragments
 
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import coil.load
+import com.example.cinemaxv3.viewmodels.favouriteMoviesViewModel.FavouriteMoviesViewModel
+import com.example.domain.entities.model.favourites.FavouriteMovies
 import com.example.educativecourseproject.R
+import com.example.educativecourseproject.databinding.FragmentMovieDetailsBinding
+import com.google.android.material.snackbar.Snackbar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MovieDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val args : MovieDetailsFragmentArgs by navArgs()
+    private val favouriteMoviesViewModel: FavouriteMoviesViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentMovieDetailsBinding.bind(view)
+
+        val actionbar = (activity as AppCompatActivity).supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setBackgroundDrawable(context?.let {
+                ContextCompat.getColor(
+                    it,
+                    R.color.black
+                )
+            }?.let { ColorDrawable(it) })
+            title = "MovieDetailsFragment"
+        }
+
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+        binding.progress.setVisibility(View.GONE)
+
+        collectArgumentsAndPerformOperation(binding, view)
+
+    }
+
+    private fun collectArgumentsAndPerformOperation(
+        binding: FragmentMovieDetailsBinding,
+        view: View
+    ) {
+        binding.apply {
+            args.apply {
+                val image = image
+                val backdrop = backdrop
+                val title = title
+                val description = description
+                val rating = rating
+                val movieId = id
+
+                movieImage.load(image)
+                movieTitle.text = title
+                movieDescription.text = description
+                backdropImage.load(backdrop)
+                Log.i("MOVIE DETAILS", "${args.backdrop}")
+
+                saveBookMarks(binding, image, backdrop, title, description, rating, movieId)
+
+                reviewClickListener(binding, movieId)
+
+                trailerClickListener(binding, movieId, title, view)
+
+                shareClickListener(binding, movieId, title)
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+    fun reviewClickListener(binding: FragmentMovieDetailsBinding, movieId: Int) {
+        binding.apply {
+            binding.playButton.setOnClickListener {
+                progress.setVisibility(View.VISIBLE)
+
+                val id = movieId
+                val action =
+                    MovieDetailsFragmentDirections.actionMovieDetailsFragmentToReviewsFragment(id)
+                findNavController().navigate(action)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MovieDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MovieDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    fun trailerClickListener(
+        binding: FragmentMovieDetailsBinding,
+        movieId: Int,
+        title: String,
+        view: View
+    ) {
+        binding.apply {
+            btnTrailer.setOnClickListener {
+                progress.setVisibility(View.VISIBLE)
+
+                val movieId = movieId
+                val title = title
+
+                val action =
+                    MovieDetailsFragmentDirections.actionMovieDetailsFragmentToMovieTrailerFragment(
+                        movieId,
+                        title
+                    )
+                findNavController().navigate(action)
+            }
+        }
+    }
+
+    fun saveBookMarks(
+        binding: FragmentMovieDetailsBinding,
+        image: String,
+        backdrop: String,
+        title: String,
+        description: String,
+        rating: Float,
+        id: Int
+    ) {
+        binding.apply {
+            watchlist.setOnClickListener {
+                val title = title
+                val description = description
+                val rating = rating
+                val image = image
+                val backdrop = backdrop
+                val id = id
+
+                val favouriteMovies = FavouriteMovies(
+                    title = title,
+                    overview = description,
+                    vote_average = rating,
+                    poster_path = image,
+                    backdrop_path = backdrop,
+                    id = id
+                )
+                favouriteMoviesViewModel.saveFavouriteMovies(favouriteMovies)
+                view?.let { it1 ->
+                    Snackbar.make(
+                        it1,
+                        "Movie Saved Successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
+        }
+    }
+
+    fun shareClickListener(binding: FragmentMovieDetailsBinding, id: Int, title: String) {
+
+        binding.shareMovie.setOnClickListener {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name))
+                val shareMessage = "Have you checked out : " +
+                        "${title}?\n" +
+                        "Watch it all here:\n" +
+                        "https://www.themoviedb.org/movie/${id}"
+                putExtra(Intent.EXTRA_TEXT, shareMessage)
+            }
+            startActivity(Intent.createChooser(shareIntent, "Select app to share with"))
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.cinemaxv3.models
 
-import androidx.room.*
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
 

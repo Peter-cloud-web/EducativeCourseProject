@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemTvShowsBinding
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.domain.entities.model.tvShowsResponse.TvShowsResults
+import com.example.educativecourseproject.databinding.TvShowsItemsBinding
 import javax.inject.Inject
 
 class SharedTvShowsAdapter @Inject constructor(private val imageLoader: ImageLoader) :
@@ -20,7 +20,7 @@ class SharedTvShowsAdapter @Inject constructor(private val imageLoader: ImageLoa
     private var onMovieClickListener: ((TvShowsResults) -> Unit)? =
         null
 
-    inner class TopRatedTvShowsViewHolder(val binding: ItemTvShowsBinding) :
+    inner class TopRatedTvShowsViewHolder(val binding: TvShowsItemsBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     companion object {
@@ -73,7 +73,7 @@ class SharedTvShowsAdapter @Inject constructor(private val imageLoader: ImageLoa
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopRatedTvShowsViewHolder {
         return TopRatedTvShowsViewHolder(
-            ItemTvShowsBinding.inflate(
+            TvShowsItemsBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

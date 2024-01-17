@@ -17,7 +17,14 @@
         android:id="@+id/movieTrailerFragment"
         android:name="com.example.educativecourseproject.presentation.ui.fragments.MovieTrailerFragment"
         android:label="MovieTrailerFragment"
-        tools:layout="@layout/fragment_movie_trailer"/>
+        tools:layout="@layout/fragment_movie_trailer">
+    <argument android:name="movieId"
+        app:argType="integer" />
+    <argument
+        android:name="title"
+        app:argType="string" />
+    </fragment>
+
     <fragment
         android:id="@+id/moviesFragment"
         android:name="com.example.educativecourseproject.presentation.ui.fragments.MoviesFragment"
@@ -38,6 +45,24 @@
         <action
             android:id="@+id/action_movieDetailsFragment_to_movieTrailerFragment"
             app:destination="@id/movieTrailerFragment" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+        <argument
+            android:name="backdrop"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+        <argument
+            android:name="rating"
+            app:argType="float" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/searchMovieFragment2"
@@ -52,7 +77,12 @@
         android:id="@+id/reviewsFragment"
         android:name="com.example.educativecourseproject.presentation.ui.fragments.ReviewsFragment"
         android:label="fragment_reviews"
-        tools:layout="@layout/fragment_reviews" />
+        tools:layout="@layout/fragment_reviews" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+
     <fragment
         android:id="@+id/tvShowsFragment"
         android:name="com.example.educativecourseproject.presentation.ui.fragments.TvShowsFragment"

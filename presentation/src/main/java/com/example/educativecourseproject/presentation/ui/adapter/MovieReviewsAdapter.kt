@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemReviewsBinding
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.cinemaxv3.util.DifferCallback
+import com.example.educativecourseproject.databinding.ReviewsItemBinding
 import javax.inject.Inject
 
 class MovieReviewsAdapter @Inject constructor(private val imageLoader: ImageLoader) :
     RecyclerView.Adapter<MovieReviewsAdapter.ReviewsViewHolder>() {
-    inner class ReviewsViewHolder(val binding: ItemReviewsBinding) :
+    inner class ReviewsViewHolder(val binding: ReviewsItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     val comparator = AsyncListDiffer(this, DifferCallback.differCallBack)
@@ -23,7 +23,7 @@ class MovieReviewsAdapter @Inject constructor(private val imageLoader: ImageLoad
         parent: ViewGroup,
         viewType: Int
     ): MovieReviewsAdapter.ReviewsViewHolder {
-        val binding = ItemReviewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ReviewsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ReviewsViewHolder(binding)
     }
 

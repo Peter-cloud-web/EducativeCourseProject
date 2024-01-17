@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemSearchBinding
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.domain.entities.model.favourites.FavouriteMovies
+import com.example.educativecourseproject.databinding.SearchMoviesItemBinding
 import javax.inject.Inject
 
 class FavouriteMoviesAdapter @Inject constructor(private val imageLoader: ImageLoader) :
@@ -22,7 +22,7 @@ class FavouriteMoviesAdapter @Inject constructor(private val imageLoader: ImageL
         onDeleteMovieClickListener = listener
     }
 
-    inner class FavouriteMoviesViewHolder(val binding: ItemSearchBinding) :
+    inner class FavouriteMoviesViewHolder(val binding: SearchMoviesItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     val favouriteMovies = AsyncListDiffer(this, FavouriteMoviesComparator)
@@ -31,7 +31,7 @@ class FavouriteMoviesAdapter @Inject constructor(private val imageLoader: ImageL
         parent: ViewGroup,
         viewType: Int
     ): FavouriteMoviesViewHolder {
-        val binding = ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = SearchMoviesItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FavouriteMoviesViewHolder(binding)
     }
 
@@ -50,7 +50,7 @@ class FavouriteMoviesAdapter @Inject constructor(private val imageLoader: ImageL
                 imageLoader.enqueue(request)
 
                 binding.ratingMovie.text = this.vote_average.toString()
-                binding.movieTitile.text = this.title.toString()
+                binding.movieTitle.text = this.title.toString()
                 binding.aboutMovie.text = this.overview.toString()
 
                 itemView.setOnClickListener {
@@ -61,11 +61,11 @@ class FavouriteMoviesAdapter @Inject constructor(private val imageLoader: ImageL
                     }
                 }
 
-                binding.deleteMovie.setOnClickListener {
-                    this.let { favouriteMovie ->
-                        onDeleteMovieClickListener?.invoke(favouriteMovie.id)
-                    }
-                }
+//                binding.delete.setOnClickListener {
+//                    this.let { favouriteMovie ->
+//                        onDeleteMovieClickListener?.invoke(favouriteMovie.id)
+//                    }
+//                }
 
             }
         }

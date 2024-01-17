@@ -1,8 +1,8 @@
 package com.example.data.repository
 
-import com.example.db.MovieDatabase
 import com.example.domain.entities.model.favourites.FavouriteMovies
 import com.example.domain.repository.CachedMoviesRepository
+import com.example.educativecourseproject.data.db.MovieDatabase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

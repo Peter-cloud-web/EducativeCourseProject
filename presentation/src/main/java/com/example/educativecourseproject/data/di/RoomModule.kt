@@ -2,13 +2,13 @@ package com.example.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.db.MovieDatabase
 import com.example.db.dao.movieDaos.MovieDao
 import com.example.db.dao.movieDaos.TopRatedMoviesDao
 import com.example.db.dao.movieDaos.UpComingMoviesDao
 import com.example.db.dao.remoteKeysDaos.RemoteKeysDao
 import com.example.db.dao.remoteKeysDaos.TopRatedRemoteKeysDao
 import com.example.db.dao.remoteKeysDaos.UpComingRemoteKeyDao
+import com.example.educativecourseproject.data.db.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

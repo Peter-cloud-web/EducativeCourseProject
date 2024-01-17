@@ -1,7 +1,6 @@
 package com.example.domain.movieDto
 
 import androidx.room.*
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import java.io.Serializable
 

@@ -7,6 +7,7 @@ import com.example.db.dao.movieDaos.converters.ListConverter
 
 
 @Dao
+@TypeConverters(ListConverter::class)
 interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPopularMovies(movie: List<Movie>)

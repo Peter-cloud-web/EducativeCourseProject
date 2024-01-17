@@ -1,16 +1,18 @@
 package com.example.paging.mediators
 
+import android.net.http.HttpException
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState.Loading.endOfPaginationReached
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.example.db.MovieDatabase
 import com.example.cinemaxv3.models.TopRatedTvShowsRemoteKeys
 import com.example.domain.entities.model.tvShowsResponse.TvShowsResults
 import com.example.domain.repository.RemoteMoviesRepository
-import retrofit2.HttpException
+import com.example.educativecourseproject.data.db.MovieDatabase
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -32,6 +34,7 @@ class TopRatedTvShowsMediator(
         }
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, TvShowsResults>

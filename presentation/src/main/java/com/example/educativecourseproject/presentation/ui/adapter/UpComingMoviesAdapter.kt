@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.request.ImageRequest
-import com.example.cinemaxv3.databinding.ItemMoviesBinding
 import com.example.cinemaxv3.models.UpComingMovies
 import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
+import com.example.educativecourseproject.databinding.MovieItemBinding
+import com.example.educativecourseproject.databinding.SimilarMoviesItemBinding
 import javax.inject.Inject
 
 class UpComingMoviesAdapter @Inject constructor(private val imageLoader: ImageLoader) :
@@ -18,7 +19,7 @@ class UpComingMoviesAdapter @Inject constructor(private val imageLoader: ImageLo
     ) {
     private var onMovieClickListener: ((UpComingMovies) -> Unit)? = null
 
-    inner class UpComingMovieViewHolder(val binding: ItemMoviesBinding) :
+    inner class UpComingMovieViewHolder(val binding: MovieItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     companion object {
@@ -70,7 +71,7 @@ class UpComingMoviesAdapter @Inject constructor(private val imageLoader: ImageLo
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UpComingMovieViewHolder {
         return UpComingMovieViewHolder(
-            ItemMoviesBinding.inflate(
+            MovieItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

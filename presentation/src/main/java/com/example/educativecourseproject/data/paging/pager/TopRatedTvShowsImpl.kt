@@ -4,10 +4,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.db.MovieDatabase
 import com.example.domain.entities.model.tvShowsResponse.TvShowsResults
 import com.example.domain.pager.ToPRatedTvShowsPager
 import com.example.domain.repository.RemoteMoviesRepository
+import com.example.educativecourseproject.data.db.MovieDatabase
 import com.example.paging.mediators.TopRatedTvShowsMediator
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package com.example.paging.mediators
 
-import Mappers.toUpComingMovies
+import android.net.http.HttpException
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState.Loading.endOfPaginationReached
 import androidx.paging.LoadType
@@ -9,9 +9,9 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.cinemaxv3.models.UpComingMovies
 import com.example.cinemaxv3.models.UpComingRemoteKeys
-import com.example.db.MovieDatabase
 import com.example.domain.repository.RemoteMoviesRepository
-import retrofit2.HttpException
+import com.example.educativecourseproject.data.db.MovieDatabase
+import com.example.educativecourseproject.data.mappers.Mappers.toUpComingMovies
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

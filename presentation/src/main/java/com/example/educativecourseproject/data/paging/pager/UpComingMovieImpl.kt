@@ -5,9 +5,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.cinemaxv3.models.UpComingMovies
-import com.example.db.MovieDatabase
 import com.example.domain.pager.UpComingPagingMovies
 import com.example.domain.repository.RemoteMoviesRepository
+import com.example.educativecourseproject.data.db.MovieDatabase
 import com.example.paging.mediators.UpComingMoviesMediator
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

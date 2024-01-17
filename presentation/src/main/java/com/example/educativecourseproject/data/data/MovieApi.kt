@@ -9,9 +9,10 @@ import com.example.domain.entities.model.tvShowsResponse.TvShowsResponses
 import com.example.domain.movieDto.MovieResponseDto
 import com.example.domain.movieDto.TopRatedMovieResponseDto
 import com.example.domain.movieDto.UpComingMovieResponseDto
-import com.example.util.Constants
-import com.example.util.Constants.KTOR_BASE_URL
-import com.example.util.Constants.SEARCH_MOVIES
+import com.example.educativecourseproject.BuildConfig
+import com.example.educativecourseproject.data.util.Constants
+import com.example.educativecourseproject.data.util.Constants.KTOR_BASE_URL
+import com.example.educativecourseproject.data.util.Constants.SEARCH_MOVIES
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.http.URLProtocol

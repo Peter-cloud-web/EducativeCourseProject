@@ -1,14 +1,16 @@
 package com.example.paging.mediators
 
-import Mappers.toMovie
+import android.net.http.HttpException
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.paging.*
 import androidx.paging.LoadState.Loading.endOfPaginationReached
 import androidx.room.withTransaction
 import com.example.cinemaxv3.models.Movie
 import com.example.cinemaxv3.models.MovieRemoteKeys
-import com.example.db.MovieDatabase
 import com.example.domain.repository.RemoteMoviesRepository
-import retrofit2.HttpException
+import com.example.educativecourseproject.data.db.MovieDatabase
+import com.example.educativecourseproject.data.mappers.Mappers.toPopularMovie
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -31,6 +33,7 @@ class PopularMoviesMediator @Inject constructor(
     }
 
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Movie>): MediatorResult {
         val page: Int = when (loadType) {
             LoadType.REFRESH -> {
@@ -55,7 +58,7 @@ class PopularMoviesMediator @Inject constructor(
         try {
             val apiResponse = repository.getPopularMovies(page = page)
             val movies = apiResponse.data?.results?.map { movieDto ->
-                movieDto.toMovie()
+                movieDto.toPopularMovie()
             }
 
 
@@ -79,7 +82,9 @@ class PopularMoviesMediator @Inject constructor(
                 }
                 movies?.let { movieList ->
                     db.getMovieDao()
-                        .insertPopularMovies(movieList.onEachIndexed { _, movie -> movie.page = page })
+                        .insertPopularMovies(movieList.onEachIndexed { _, movie ->
+                            movie.page = page
+                        })
                 }
 
             }

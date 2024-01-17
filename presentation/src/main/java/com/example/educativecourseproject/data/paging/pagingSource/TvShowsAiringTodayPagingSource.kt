@@ -1,10 +1,12 @@
 package com.example.paging.pagingSource
 
+import android.net.http.HttpException
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.domain.entities.model.tvShowsResponse.TvShowsResults
 import com.example.domain.repository.RemoteMoviesRepository
-import retrofit2.HttpException
 import javax.inject.Inject
 
 class TvShowsAiringTodayPagingSource @Inject constructor(
@@ -14,6 +16,7 @@ class TvShowsAiringTodayPagingSource @Inject constructor(
         return 1
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, TvShowsResults> {
         return try {
             val currentKey = params.key ?: 1

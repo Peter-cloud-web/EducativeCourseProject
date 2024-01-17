@@ -1,6 +1,5 @@
 package com.example.domain.movieDto
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
