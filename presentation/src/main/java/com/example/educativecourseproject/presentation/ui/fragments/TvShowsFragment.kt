@@ -82,7 +82,9 @@ class TvShowsFragment : Fragment(R.layout.fragment_tv_shows) {
 
     private fun loadDefaultTvShowsBeforeOptions() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
             topRatedTvShowsViewModel.topRatedTvShowsUiState.collect { uiState ->
+
                 withContext(Dispatchers.Main) {
 
                     when {
@@ -139,32 +141,39 @@ class TvShowsFragment : Fragment(R.layout.fragment_tv_shows) {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+
                 when (menuItem.itemId) {
 
                     R.id.topRatedTvShows -> {
-                        viewLifecycleOwner.lifecycleScope.launch {
+
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
                             topRatedTvShowsViewModel.topRatedTvShowsUiState.collect { uiState ->
-                                when {
-                                    uiState.isLoading -> {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "We are loading..",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
 
-                                    uiState.movies != null -> {
-                                        uiState.movies.collect {
-                                            sharedTvShowsAdapter.submitData(it)
+                                withContext(Dispatchers.Main) {
+
+                                    when {
+                                        uiState.isLoading -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "We are loading..",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
-                                    }
 
-                                    uiState.error != null -> {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "An unexpected error occurred",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        uiState.movies != null -> {
+                                            uiState.movies.collect {
+                                                sharedTvShowsAdapter.submitData(it)
+                                            }
+                                        }
+
+                                        uiState.error != null -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "An unexpected error occurred",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                                 currentAdapter = sharedTvShowsAdapter
@@ -175,23 +184,29 @@ class TvShowsFragment : Fragment(R.layout.fragment_tv_shows) {
                     }
 
                     R.id.popularTvShows -> {
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            popularTvShowViewModel.popularTvShowsUiStates.collect { uiState ->
-                                when {
-                                    uiState.isLoading -> {}
-                                    uiState.movies != null -> {
-                                        uiState.movies
-                                            .collect {
-                                                sharedTvShowsAdapter.submitData(it)
-                                            }
-                                    }
 
-                                    uiState.error != null -> {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "An unexpected error occurred",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+                            popularTvShowViewModel.popularTvShowsUiStates.collect { uiState ->
+
+                                withContext(Dispatchers.Main) {
+
+                                    when {
+                                        uiState.isLoading -> {}
+                                        uiState.movies != null -> {
+                                            uiState.movies
+                                                .collect {
+                                                    sharedTvShowsAdapter.submitData(it)
+                                                }
+                                        }
+
+                                        uiState.error != null -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "An unexpected error occurred",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                                 currentAdapter = sharedTvShowsAdapter
@@ -203,22 +218,27 @@ class TvShowsFragment : Fragment(R.layout.fragment_tv_shows) {
                     }
 
                     R.id.tvShowsOnTheAir -> {
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            tvShowsOnTheAirViewModel.tvShowsOnTheAir.collect { uiState ->
-                                when {
-                                    uiState.isLoading -> {}
-                                    uiState.movies != null -> {
-                                        uiState.movies.collect {
-                                            sharedTvShowsAdapter.submitData(it)
-                                        }
-                                    }
 
-                                    uiState.error != null -> {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "An unexpected error occurred",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+                            tvShowsOnTheAirViewModel.tvShowsOnTheAir.collect { uiState ->
+
+                                withContext(Dispatchers.Main) {
+                                    when {
+                                        uiState.isLoading -> {}
+                                        uiState.movies != null -> {
+                                            uiState.movies.collect {
+                                                sharedTvShowsAdapter.submitData(it)
+                                            }
+                                        }
+
+                                        uiState.error != null -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "An unexpected error occurred",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                                 currentAdapter = sharedTvShowsAdapter
@@ -229,22 +249,27 @@ class TvShowsFragment : Fragment(R.layout.fragment_tv_shows) {
                     }
 
                     R.id.tvShowsAiringToday -> {
-                        viewLifecycleOwner.lifecycleScope.launch {
-                            tvShowsAiringTodayViewModel.tvShowsAiringTodayUiState.collect { uiState ->
-                                when {
-                                    uiState.isLoading -> {}
-                                    uiState.movies != null -> {
-                                        uiState.movies.collect {
-                                            sharedTvShowsAdapter.submitData(it)
-                                        }
-                                    }
 
-                                    uiState.error != null -> {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "An unexpected error occurred",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+
+                            tvShowsAiringTodayViewModel.tvShowsAiringTodayUiState.collect { uiState ->
+
+                                withContext(Dispatchers.Main) {
+                                    when {
+                                        uiState.isLoading -> {}
+                                        uiState.movies != null -> {
+                                            uiState.movies.collect {
+                                                sharedTvShowsAdapter.submitData(it)
+                                            }
+                                        }
+
+                                        uiState.error != null -> {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "An unexpected error occurred",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
                                 }
                                 currentAdapter = sharedTvShowsAdapter
