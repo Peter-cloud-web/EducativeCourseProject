@@ -1,6 +1,10 @@
 package com.example.cinemaxv3.viewmodels.popularMoviesViewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.bumptech.glide.load.HttpException
@@ -20,8 +24,8 @@ class PopularMoviesViewModel @Inject constructor(
     private val repository: RemoteMoviesRepository
 ) : ViewModel() {
 
-    private val _popularMovieStates = MutableStateFlow(UiStates<Movie>())
-    val popularMoviesUiState = _popularMovieStates.asStateFlow()
+    private val _popularMovieStates = MutableLiveData(UiStates<Movie>())
+    val popularMoviesUiState = _popularMovieStates
 
     suspend fun getTopRatedMovie(): List<Movie>? =
         repository.getPopularMovies(1).data?.results?.map {
@@ -35,7 +39,7 @@ class PopularMoviesViewModel @Inject constructor(
     fun getPopularMovies() {
         try {
             _popularMovieStates.value = UiStates(isLoading = true)
-            val pagingData = getPopularMoviesUseCase().cachedIn(viewModelScope)
+            val pagingData = getPopularMoviesUseCase().cachedIn(viewModelScope).asLiveData()
             _popularMovieStates.value = UiStates(movies = pagingData)
         } catch (e: Exception) {
             _popularMovieStates.value =

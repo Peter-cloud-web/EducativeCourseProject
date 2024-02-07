@@ -3,17 +3,14 @@ package com.example.educativecourseproject.presentation.ui.fragments
 import android.annotation.SuppressLint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import androidx.navigation.fragment.navArgs
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +19,6 @@ import com.bumptech.glide.Glide
 import com.example.cinemaxv3.receivers.ConnectivityObserver
 import com.example.cinemaxv3.receivers.ConnectivityObserverImpl
 import com.example.cinemaxv3.util.Constants
-import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.cinemaxv3.view.ui.adapter.PopularMovieAdapter
 import com.example.cinemaxv3.view.ui.adapter.TopRatedMoviesAdapter
 import com.example.cinemaxv3.view.ui.adapter.UpComingMoviesAdapter
@@ -33,6 +29,7 @@ import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private lateinit var popularMovieAdapter: PopularMovieAdapter
@@ -108,9 +105,9 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                         isLoading -> {}
 
                         movies != null -> {
-                            movies.collect {
-                                topRatedMoviesAdapter.submitData(it)
-                            }
+//                            movies.collect {
+//                                topRatedMoviesAdapter.submitData(it)
+//                            }
                         }
 
                         error != null -> {
@@ -127,28 +124,30 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
         lifecycleScope.launch {
-            popularMoviesViewModel.popularMoviesUiState.collect { uiState ->
+            popularMoviesViewModel.popularMoviesUiState.observe(
+                viewLifecycleOwner,
+                Observer { uiState ->
+                    with(uiState) {
+                        when {
+                            isLoading -> {}
+                            movies != null -> {
+                                uiState.movies?.observe(viewLifecycleOwner, Observer {
+                                    lifecycleScope.launch {
+                                        popularMovieAdapter.submitData(it)
+                                    }
+                                })
+                            }
 
-                with(uiState) {
-                    when {
-                        isLoading -> {}
-
-                        movies != null -> {
-                            uiState.movies.collect {
-                                popularMovieAdapter.submitData(it)
+                            error != null -> {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "An unexpected error occurred",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
-
-                        error != null -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "An unexpected error occurred",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
                     }
-                }
-            }
+                })
         }
 
         lifecycleScope.launch {
@@ -158,11 +157,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                     when {
                         isLoading -> {}
 
-                        movies != null -> {
-                            uiState.movies.collect {
-                                upComingMoviesAdapter.submitData(it)
-                            }
-                        }
+//                        movies != null -> {
+//                            uiState.movies.collect {
+//                                upComingMoviesAdapter.submitData(it)
+//                            }
+//                        }
 
                         error != null -> {
                             Toast.makeText(
