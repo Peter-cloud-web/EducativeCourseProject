@@ -1,6 +1,8 @@
 package com.example.cinemaxv3.viewmodels.tvShowsOnTheAirViewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.bumptech.glide.load.HttpException
@@ -17,8 +19,8 @@ import javax.inject.Inject
 class TvShowsOnTheAirViewModel @Inject constructor(private val tvShowsOnTheAirUseCase: TvShowsOnTheAirUseCase) :
     ViewModel() {
 
-    private val _tvShowsOnTheAir = MutableStateFlow(UiStates<TvShowsResults>())
-    val tvShowsOnTheAir = _tvShowsOnTheAir.asStateFlow()
+    private val _tvShowsOnTheAir = MutableLiveData(UiStates<TvShowsResults>())
+    val tvShowsOnTheAir = _tvShowsOnTheAir
 
     init {
         getTvShowsOnTheAir()
@@ -27,7 +29,7 @@ class TvShowsOnTheAirViewModel @Inject constructor(private val tvShowsOnTheAirUs
     fun getTvShowsOnTheAir() {
         try {
             _tvShowsOnTheAir.value = UiStates(isLoading = true)
-            val response = tvShowsOnTheAirUseCase().cachedIn(viewModelScope)
+            val response = tvShowsOnTheAirUseCase().cachedIn(viewModelScope).asLiveData()
             _tvShowsOnTheAir.value = UiStates(movies = response)
         } catch (e: Exception) {
             _tvShowsOnTheAir.value =

@@ -1,6 +1,8 @@
 package com.example.cinemaxv3.viewmodels.TopRatedTvShowsViewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.bumptech.glide.load.HttpException
@@ -18,8 +20,8 @@ class TopRatedTvShowsViewModel @Inject constructor(
     private val getTopRatedTvShowsUseCase: TopRatedTvShowsUseCase
 ) : ViewModel() {
 
-    private val _topRatedTvShowsUiState = MutableStateFlow(UiStates<TvShowsResults>())
-    val topRatedTvShowsUiState = _topRatedTvShowsUiState.asStateFlow()
+    private val _topRatedTvShowsUiState = MutableLiveData(UiStates<TvShowsResults>())
+    val topRatedTvShowsUiState = _topRatedTvShowsUiState
 
 
     init {
@@ -29,7 +31,7 @@ class TopRatedTvShowsViewModel @Inject constructor(
     fun getTopRatedTvShows() {
         try {
             _topRatedTvShowsUiState.value = UiStates(isLoading = true)
-            val response = getTopRatedTvShowsUseCase().cachedIn(viewModelScope)
+            val response = getTopRatedTvShowsUseCase().cachedIn(viewModelScope).asLiveData()
             _topRatedTvShowsUiState.value = UiStates(movies = response)
         } catch (e: Exception) {
             _topRatedTvShowsUiState.value =

@@ -1,6 +1,8 @@
 package com.example.cinemaxv3.viewmodels.popularTvShowViewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.bumptech.glide.load.HttpException
@@ -18,8 +20,8 @@ class PopularTvShowViewModel @Inject constructor(
     private val getPopularTvShowsUseCase: PopularTvShowsUseCase,
 ) : ViewModel() {
 
-    private val _popularTvShowState = MutableStateFlow(UiStates<TvShowsResults>()) //Mutable
-    val popularTvShowsUiStates = _popularTvShowState.asStateFlow() //immutable
+    private val _popularTvShowState = MutableLiveData(UiStates<TvShowsResults>()) //Mutable
+    val popularTvShowsUiStates = _popularTvShowState //immutable
 
     init {
         getPopularTvShows()
@@ -28,7 +30,7 @@ class PopularTvShowViewModel @Inject constructor(
     fun getPopularTvShows() {
         try {
             _popularTvShowState.value = UiStates(isLoading = true)
-            val response = getPopularTvShowsUseCase().cachedIn(viewModelScope)
+            val response = getPopularTvShowsUseCase().cachedIn(viewModelScope).asLiveData()
             _popularTvShowState.value = UiStates(movies = response)
         } catch (e: Exception) {
             _popularTvShowState.value =

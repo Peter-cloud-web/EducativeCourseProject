@@ -3,7 +3,9 @@ package com.example.cinemaxv3.viewmodels.topRatedMovieViewModel
 import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.cinemaxv3.models.TopRatedMovies
@@ -15,22 +17,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.io.IOException
 import javax.inject.Inject
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @HiltViewModel
 class TopRatedMovieViewModel @Inject constructor(
     private val getTopRatedMoviesUseCase: TopRatedMoviesUseCase
 ) : ViewModel() {
 
-    private val _topRatedMovieStates = MutableStateFlow(UiStates<TopRatedMovies>())
-    val topRatedMovieUiState = _topRatedMovieStates.asStateFlow()
+    private val _topRatedMovieStates = MutableLiveData(UiStates<TopRatedMovies>())
+    val topRatedMovieUiState = _topRatedMovieStates
 
     init {
         getTopRatedMovies()
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getTopRatedMovies() {
         try {
             _topRatedMovieStates.value = UiStates(isLoading = true)
-            val pagingData = getTopRatedMoviesUseCase().cachedIn(viewModelScope)
+            val pagingData = getTopRatedMoviesUseCase().cachedIn(viewModelScope).asLiveData()
             _topRatedMovieStates.value = UiStates(movies = pagingData)
         } catch (e: Exception) {
             _topRatedMovieStates.value =

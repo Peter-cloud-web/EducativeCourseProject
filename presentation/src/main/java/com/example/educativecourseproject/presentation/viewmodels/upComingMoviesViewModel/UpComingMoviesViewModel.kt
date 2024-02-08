@@ -1,6 +1,8 @@
 package com.example.cinemaxv3.viewmodels.upComingMoviesViewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.bumptech.glide.load.HttpException
@@ -19,8 +21,8 @@ class UpComingMoviesViewModel @Inject constructor(
 
     ) : ViewModel() {
 
-    private val _upComingMoviesState = MutableStateFlow(UiStates<UpComingMovies>())
-    val upComingMoviesState = _upComingMoviesState.asStateFlow()
+    private val _upComingMoviesState = MutableLiveData(UiStates<UpComingMovies>())
+    val upComingMoviesState = _upComingMoviesState
 
     init {
         getUpComingMovies()
@@ -29,7 +31,7 @@ class UpComingMoviesViewModel @Inject constructor(
     fun getUpComingMovies() {
         try {
             _upComingMoviesState.value = UiStates(isLoading = true)
-            val response = getUpComingMoviesUseCase().cachedIn(viewModelScope)
+            val response = getUpComingMoviesUseCase().cachedIn(viewModelScope).asLiveData()
             _upComingMoviesState.value = UiStates(movies = response)
         } catch (e: Exception) {
             _upComingMoviesState.value =

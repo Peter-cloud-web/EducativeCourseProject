@@ -2,9 +2,11 @@ package com.example.educativecourseproject.presentation.ui.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresExtension
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -95,19 +97,25 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     private fun fetchMovies(binding: FragmentMoviesBinding) {
-        lifecycleScope.launch {
-            topRatedMovieViewModel.topRatedMovieUiState.collect { uiState ->
 
+        topRatedMovieViewModel.topRatedMovieUiState.observe(
+            viewLifecycleOwner,
+            Observer { uiState ->
                 with(uiState) {
-
                     when {
                         isLoading -> {}
 
                         movies != null -> {
-//                            movies.collect {
-//                                topRatedMoviesAdapter.submitData(it)
-//                            }
+                            uiState.movies?.observe(
+                                viewLifecycleOwner,
+                                Observer { topratedMoviesPagingData ->
+                                    lifecycleScope.launch {
+                                        topRatedMoviesAdapter.submitData(topratedMoviesPagingData)
+                                    }
+
+                                })
                         }
 
                         error != null -> {
@@ -119,49 +127,47 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                         }
                     }
                 }
+            })
 
-            }
-        }
+        popularMoviesViewModel.popularMoviesUiState.observe(
+            viewLifecycleOwner,
+            Observer { uiState ->
+                with(uiState) {
+                    when {
+                        isLoading -> {}
+                        movies != null -> {
+                            uiState.movies?.observe(viewLifecycleOwner, Observer { pagingData ->
+                                lifecycleScope.launch {
+                                    popularMovieAdapter.submitData(pagingData)
+                                }
+                            })
+                        }
 
-        lifecycleScope.launch {
-            popularMoviesViewModel.popularMoviesUiState.observe(
-                viewLifecycleOwner,
-                Observer { uiState ->
-                    with(uiState) {
-                        when {
-                            isLoading -> {}
-                            movies != null -> {
-                                uiState.movies?.observe(viewLifecycleOwner, Observer {
-                                    lifecycleScope.launch {
-                                        popularMovieAdapter.submitData(it)
-                                    }
-                                })
-                            }
-
-                            error != null -> {
-                                Toast.makeText(
-                                    requireContext(),
-                                    "An unexpected error occurred",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                        error != null -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "An unexpected error occurred",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
-                })
-        }
+                }
+            })
 
-        lifecycleScope.launch {
-            upComingMoviesViewModel.upComingMoviesState.collect { uiState ->
-
+        upComingMoviesViewModel.upComingMoviesState.observe(
+            viewLifecycleOwner,
+            Observer { uiState ->
                 with(uiState) {
                     when {
                         isLoading -> {}
 
-//                        movies != null -> {
-//                            uiState.movies.collect {
-//                                upComingMoviesAdapter.submitData(it)
-//                            }
-//                        }
+                        movies != null -> {
+                            movies.observe(viewLifecycleOwner, Observer { upComingMoviesPagedData ->
+                                lifecycleScope.launch {
+                                    upComingMoviesAdapter.submitData(upComingMoviesPagedData)
+                                }
+                            })
+                        }
 
                         error != null -> {
                             Toast.makeText(
@@ -171,10 +177,11 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                             ).show()
                         }
                     }
+
                 }
-            }
-        }
+            })
     }
+
 
 
     private fun setUpViews(binding: FragmentMoviesBinding) {
