@@ -79,6 +79,15 @@
                 android:text="Watch trailer"
                 android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/popularMoviesBannerTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/archivo_black"
+                android:text="Title"
+                android:textSize="20sp" />
+
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -1,60 +1,231 @@
 package com.example.educativecourseproject.presentation.ui.fragments
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
+import com.example.cinemaxv3.view.ui.adapter.MovieCastsAdapter
+import com.example.cinemaxv3.view.ui.adapter.SimilarMoviesAdapter
+import com.example.cinemaxv3.viewmodels.movieCastViewModel.MovieCastsViewModel
+import com.example.cinemaxv3.viewmodels.movieTrailerViewModel.MovieTrailerViewModel
+import com.example.cinemaxv3.viewmodels.similarMoviesViewModel.SimilarMoviesViewModel
+import com.example.domain.entities.model.movieCasts.Cast
+import com.example.domain.entities.model.similarMoviesResponse.SimilarMovies
 import com.example.educativecourseproject.R
+import com.example.educativecourseproject.databinding.FragmentMovieTrailerBinding
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class MovieTrailerFragment : Fragment(R.layout.fragment_movie_trailer) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieTrailerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MovieTrailerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val movieTrailerViewModel: MovieTrailerViewModel by viewModels()
+    private val movieCastsViewModel: MovieCastsViewModel by viewModels()
+    private val similarMoviesViewModel: SimilarMoviesViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private lateinit var videoView: YouTubePlayerView
+    private lateinit var castsAdapter: MovieCastsAdapter
+    private lateinit var similarMoviesAdapter: SimilarMoviesAdapter
+    private val args: MovieTrailerFragmentArgs by navArgs()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentMovieTrailerBinding.bind(view)
+        val imageLoader = ImageLoader(requireContext())
+
+        castsAdapter = MovieCastsAdapter(imageLoader)
+        similarMoviesAdapter = SimilarMoviesAdapter(imageLoader)
+        videoView = binding.videoView
+
+        val actionbar = requireActivity().actionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setBackgroundDrawable(context?.let {
+                ContextCompat.getColor(
+                    it,
+                    R.color.black
+                )
+            }?.let { ColorDrawable(it) })
+            title = "Trailers"
+        }
+
+
+
+        binding.apply {
+            progressbar1.setVisibility(View.VISIBLE)
+            progressbar2.setVisibility(View.VISIBLE)
+        }
+
+        collectArgumentsAndPerformOperations(binding)
+        movieCastsRecyclerView(binding)
+        similarMoviesRecyclerView(binding)
+    }
+
+    private fun collectArgumentsAndPerformOperations(binding: FragmentMovieTrailerBinding) {
+        val id = args.movieId
+        if (id != null) {
+            movieCastsViewModel.movieCasts(id)
+            similarMoviesViewModel.getSimilarMovies(id)
+        }
+        val title = args.title
+        binding.movieName.text = title
+
+        loadMovieCasts()
+        loadSimilarMovies()
+        playTrailers(id)
+    }
+
+    private fun playTrailers(id: Int) {
+
+        lifecycleScope.launch(Dispatchers.Main) {
+
+            movieTrailerViewModel.getMovieTrailer(id).observe(viewLifecycleOwner, { movieTrailerResponse ->
+
+                videoView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+
+                    var resultKey:String = ""
+
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+
+                        super.onReady(youTubePlayer)
+
+                        movieTrailerResponse.data?.apply {
+
+                            for (i in 0..results.size - 1) {
+
+                                if (results[i].name == "Trailer") {
+
+                                    resultKey = results[i].key.toString()
+
+                                    youTubePlayer.loadVideo(
+                                        videoId = results[i].key.toString(),
+                                        0f
+                                    )
+
+                                } else if (results[i].name == "Behind the Scenes") {
+
+                                    youTubePlayer.loadVideo(
+                                        videoId = results[i].key.toString(),
+                                        0f
+                                    )
+                                }
+                                youTubePlayer.loadVideo(videoId = results[i].key.toString(), 0f)
+                            }
+                        }
+                    }
+                    override fun onError(
+                        youTubePlayer: YouTubePlayer,
+                        error: PlayerConstants.PlayerError
+                    ) {
+                        super.onError(youTubePlayer, error)
+                        val toast = Toast.makeText(activity?.applicationContext,"Error occured:${error.name.toString()}",
+                            Toast.LENGTH_SHORT)
+                        toast.show()
+//                            youTubePlayer.cueVideo(resultKey.toString(),0f)
+
+                    }
+                })
+            })
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_trailer, container, false)
-    }
+    fun loadMovieCasts() {
+        val castList = mutableListOf<Cast>()
+        lifecycleScope.launch(Dispatchers.IO) {
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MovieTrailerFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MovieTrailerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+            movieCastsViewModel.movieCastResponse.collectLatest { uiState ->
+
+                with(uiState) {
+
+                    withContext(kotlinx.coroutines.Dispatchers.Main) {
+
+                        when {
+                            isLoading -> {}
+
+                            movieCasts != null -> {
+                                val casts = uiState.movieCasts
+                                casts.collect {
+                                    castList.addAll(listOf(it))
+                                }
+                                castsAdapter.comparator.submitList(castList)
+                            }
+
+                            error != null -> {
+                                android.widget.Toast.makeText(
+                                    requireContext(),
+                                    "An unexpected error occurred, When loading casts",
+                                    android.widget.Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
                 }
             }
+        }
     }
+
+    fun movieCastsRecyclerView(binding: FragmentMovieTrailerBinding) {
+        binding.recyclerviewMovieCasts.apply {
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = castsAdapter
+            binding.progressbar1.setVisibility(View.GONE)
+        }
+    }
+
+    fun loadSimilarMovies() {
+        val similarMoviesResults =
+            mutableListOf<SimilarMovies>()
+        lifecycleScope.launch {
+            similarMoviesViewModel.similarMovies.collectLatest { uiState ->
+
+                with(uiState) {
+
+                    when {
+                        isLoading -> {}
+
+                        similarMovies != null -> {
+                            val similarMoviesResponse = uiState.similarMovies
+                            similarMoviesResponse?.collect {
+                                similarMoviesResults.addAll(listOf(it))
+                            }
+                            similarMoviesAdapter.similarMoviesDifferList.submitList(
+                                similarMoviesResults
+                            )
+                        }
+
+                        error != null -> {
+                            android.widget.Toast.makeText(
+                                requireContext(),
+                                "An unexpected error occurred, When loading similar movies",
+                                android.widget.Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun similarMoviesRecyclerView(binding: FragmentMovieTrailerBinding) {
+        binding.recyclerviewSimilar.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerviewSimilar.adapter = similarMoviesAdapter
+        binding.progressbar2.setVisibility(View.GONE)
+    }
+
 }

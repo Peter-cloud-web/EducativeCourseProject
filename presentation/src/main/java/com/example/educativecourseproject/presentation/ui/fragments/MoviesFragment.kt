@@ -47,6 +47,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     private val popularMoviesViewModel: PopularMoviesViewModel by viewModels()
     private val upComingMoviesViewModel: UpComingMoviesViewModel by viewModels()
 
+    @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +57,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         initMembers(imageLoader)
         checkNetworkConnectivity(binding)
         setUpViews(binding)
-        fetchMovies(binding)
+        fetchMovies()
         displayPopularMovie(binding)
 //        recyclerViewOnClick()
 
@@ -98,7 +99,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    private fun fetchMovies(binding: FragmentMoviesBinding) {
+    private fun fetchMovies() {
 
         topRatedMovieViewModel.topRatedMovieUiState.observe(
             viewLifecycleOwner,
@@ -183,7 +184,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
 
-
     private fun setUpViews(binding: FragmentMoviesBinding) {
         binding.topRatedMoviesRecyclerview.apply {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -255,17 +255,22 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun displayPopularMovie(binding: FragmentMoviesBinding) {
         lifecycleScope.launch {
-            val it = popularMoviesViewModel.getTopRatedMovie()
-            if (it != null) {
-                for (i in 0 until it.size) {
-                    if (it?.get(i)?.vote_average!! >= 8) {
+            val popularMovieList = popularMoviesViewModel.getTopRatedMovie()
+            if (popularMovieList != null) {
+                for (i in 0 until popularMovieList.size) {
+                    if (popularMovieList?.get(i)?.vote_average!! >= 8) {
                         binding.apply {
                             Glide.with(binding.popMov)
-                                .load(Constants.IMAGE_BASE_URL + it[i].poster_path)
+                                .load(Constants.IMAGE_BASE_URL + popularMovieList[i].poster_path)
                                 .into(popMov)
-                            vote.text = it[i].vote_average.toString()
+                            vote.text = popularMovieList[i].vote_average.toString()
+                            popularMoviesBannerTitle.text = popularMovieList[i].title.toString()
                         }
-                        popularMovieOnclick(it[i].id, it[i].title, binding)
+                        popularMovieOnclick(
+                            popularMovieList[i].id,
+                            popularMovieList[i].title,
+                            binding
+                        )
                     }
                 }
             }
@@ -278,7 +283,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             val bundle = Bundle()
             bundle.putInt("movieId", id)
             bundle.putString("title", name)
-            findNavController().navigate(R.id.action_moviesFragment_to_movieDetailsFragment, bundle)
+            findNavController().navigate(R.id.action_moviesFragment_to_movieTrailerFragment, bundle)
         }
     }
 

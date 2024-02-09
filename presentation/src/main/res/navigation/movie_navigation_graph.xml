@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_moviesFragment_to_movieTrailerFragment"
+            app:destination="@id/movieTrailerFragment" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
