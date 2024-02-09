@@ -55,7 +55,7 @@ class SearchMovieFragment : Fragment(R.layout.fragment_search_movie) {
                     R.color.black
                 )
             }?.let { ColorDrawable(it) })
-            title = "Search"
+            title = "Search Movies"
         }
     }
 

@@ -2,12 +2,10 @@ package com.example.educativecourseproject.presentation.ui.fragments
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -94,53 +92,58 @@ class MovieTrailerFragment : Fragment(R.layout.fragment_movie_trailer) {
 
         lifecycleScope.launch(Dispatchers.Main) {
 
-            movieTrailerViewModel.getMovieTrailer(id).observe(viewLifecycleOwner, { movieTrailerResponse ->
+            movieTrailerViewModel.getMovieTrailer(id)
+                .observe(viewLifecycleOwner, { movieTrailerResponse ->
 
-                videoView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    videoView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
 
-                    var resultKey:String = ""
+                        var resultKey: String = ""
 
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        override fun onReady(youTubePlayer: YouTubePlayer) {
 
-                        super.onReady(youTubePlayer)
+                            super.onReady(youTubePlayer)
 
-                        movieTrailerResponse.data?.apply {
+                            movieTrailerResponse.data?.apply {
 
-                            for (i in 0..results.size - 1) {
+                                for (i in 0..results.size - 1) {
 
-                                if (results[i].name == "Trailer") {
+                                    if (results[i].name == "Trailer") {
 
-                                    resultKey = results[i].key.toString()
+                                        resultKey = results[i].key.toString()
 
-                                    youTubePlayer.loadVideo(
-                                        videoId = results[i].key.toString(),
-                                        0f
-                                    )
+                                        youTubePlayer.loadVideo(
+                                            videoId = results[i].key.toString(),
+                                            0f
+                                        )
 
-                                } else if (results[i].name == "Behind the Scenes") {
+                                    } else if (results[i].name == "Behind the Scenes") {
 
-                                    youTubePlayer.loadVideo(
-                                        videoId = results[i].key.toString(),
-                                        0f
-                                    )
+                                        youTubePlayer.loadVideo(
+                                            videoId = results[i].key.toString(),
+                                            0f
+                                        )
+                                    }
+                                    youTubePlayer.loadVideo(videoId = results[i].key.toString(), 0f)
                                 }
-                                youTubePlayer.loadVideo(videoId = results[i].key.toString(), 0f)
                             }
                         }
-                    }
-                    override fun onError(
-                        youTubePlayer: YouTubePlayer,
-                        error: PlayerConstants.PlayerError
-                    ) {
-                        super.onError(youTubePlayer, error)
-                        val toast = Toast.makeText(activity?.applicationContext,"Error occured:${error.name.toString()}",
-                            Toast.LENGTH_SHORT)
-                        toast.show()
+
+                        override fun onError(
+                            youTubePlayer: YouTubePlayer,
+                            error: PlayerConstants.PlayerError
+                        ) {
+                            super.onError(youTubePlayer, error)
+                            val toast = Toast.makeText(
+                                activity?.applicationContext,
+                                "Error occured:${error.name.toString()}",
+                                Toast.LENGTH_SHORT
+                            )
+                            toast.show()
 //                            youTubePlayer.cueVideo(resultKey.toString(),0f)
 
-                    }
+                        }
+                    })
                 })
-            })
         }
     }
 

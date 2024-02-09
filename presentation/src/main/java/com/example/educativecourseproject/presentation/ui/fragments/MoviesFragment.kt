@@ -201,57 +201,57 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
-//    private fun recyclerViewOnClick() {
-//
-//        popularMovieAdapter.setOnItemClickListener { movie ->
-//
-//            with(movie) {
-//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-//                    IMAGE_BASE_URL + poster_path,
-//                    IMAGE_BASE_URL + backdrop_path,
-//                    title.toString(),
-//                    overview.toString(),
-//                    vote_average.toFloat(),
-//                    id
-//                )
-//                findNavController().navigate(action)
-//            }
-//        }
-//
-//
-//        topRatedMoviesAdapter.setOnItemClickListener { topRatedMovies ->
-//
-//            with(topRatedMovies) {
-//
-//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-//                    IMAGE_BASE_URL + poster_path,
-//                    IMAGE_BASE_URL + backdrop_path,
-//                    title.toString(),
-//                    overview.toString(),
-//                    vote_average.toFloat(),
-//                    id
-//                )
-//                findNavController().navigate(action)
-//            }
-//
-//        }
-//
-//        upComingMoviesAdapter.setOnItemClickListener { upComingMovies ->
-//
-//            with(upComingMovies) {
-//
-//                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-//                    IMAGE_BASE_URL + poster_path,
-//                    IMAGE_BASE_URL + backdrop_path,
-//                    title.toString(),
-//                    overview.toString(),
-//                    vote_average.toFloat(),
-//                    id
-//                )
-//                findNavController().navigate(action)
-//            }
-//        }
-//    }
+    private fun recyclerViewOnClick() {
+
+        popularMovieAdapter.setOnItemClickListener { movie ->
+
+            with(movie) {
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+                    IMAGE_BASE_URL + poster_path,
+                    IMAGE_BASE_URL + backdrop_path,
+                    title.toString(),
+                    overview.toString(),
+                    vote_average.toFloat(),
+                    id
+                )
+                findNavController().navigate(action)
+            }
+        }
+
+
+        topRatedMoviesAdapter.setOnItemClickListener { topRatedMovies ->
+
+            with(topRatedMovies) {
+
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+                    IMAGE_BASE_URL + poster_path,
+                    IMAGE_BASE_URL + backdrop_path,
+                    title.toString(),
+                    overview.toString(),
+                    vote_average.toFloat(),
+                    id
+                )
+                findNavController().navigate(action)
+            }
+
+        }
+
+        upComingMoviesAdapter.setOnItemClickListener { upComingMovies ->
+
+            with(upComingMovies) {
+
+                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+                    IMAGE_BASE_URL + poster_path,
+                    IMAGE_BASE_URL + backdrop_path,
+                    title.toString(),
+                    overview.toString(),
+                    vote_average.toFloat(),
+                    id
+                )
+                findNavController().navigate(action)
+            }
+        }
+    }
 
     private fun displayPopularMovie(binding: FragmentMoviesBinding) {
         lifecycleScope.launch {
