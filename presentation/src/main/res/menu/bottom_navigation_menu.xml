@@ -12,7 +12,7 @@
         android:title="Bookmarks"
         android:icon="@drawable/baseline_collections_bookmark_24" />
 
-    <item android:id="@+id/searchMoviesFragment"
+    <item android:id="@+id/searchMovieFragment2"
         android:title="SearchMovies"
         android:icon="@drawable/baseline_search_24" />
 
