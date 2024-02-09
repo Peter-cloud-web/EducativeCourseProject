@@ -19,8 +19,9 @@ import com.example.domain.entities.model.favourites.FavouriteMovies
 import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentMovieDetailsBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private val args : MovieDetailsFragmentArgs by navArgs()

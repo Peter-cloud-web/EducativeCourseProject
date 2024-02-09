@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.example.cinemaxv3.receivers.ConnectivityObserver
 import com.example.cinemaxv3.receivers.ConnectivityObserverImpl
 import com.example.cinemaxv3.util.Constants
+import com.example.cinemaxv3.util.Constants.IMAGE_BASE_URL
 import com.example.cinemaxv3.view.ui.adapter.PopularMovieAdapter
 import com.example.cinemaxv3.view.ui.adapter.TopRatedMoviesAdapter
 import com.example.cinemaxv3.view.ui.adapter.UpComingMoviesAdapter
@@ -59,7 +60,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         setUpViews(binding)
         fetchMovies()
         displayPopularMovie(binding)
-//        recyclerViewOnClick()
+        recyclerViewOnClick()
 
 
         val actionBar = (activity as AppCompatActivity).supportActionBar
