@@ -17,9 +17,11 @@ import com.example.cinemaxv3.viewmodels.favouriteMoviesViewModel.FavouriteMovies
 import com.example.domain.entities.model.favourites.FavouriteMovies
 import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentFavouriteMovieBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-class FavouriteMovieFragment : Fragment() {
+@AndroidEntryPoint
+class FavouriteMovieFragment : Fragment(R.layout.fragment_favourite_movie) {
     private lateinit var favouriteMoviesAdapter: FavouriteMoviesAdapter
     private val favouriteMoviesViewModel: FavouriteMoviesViewModel by viewModels()
 
