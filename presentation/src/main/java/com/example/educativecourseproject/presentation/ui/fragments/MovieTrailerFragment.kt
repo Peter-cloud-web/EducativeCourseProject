@@ -153,10 +153,13 @@ class MovieTrailerFragment : Fragment(R.layout.fragment_movie_trailer) {
 
             movieCastsViewModel.movieCastResponse.collectLatest { uiState ->
 
+                withContext(Dispatchers.Main) {
+
+                }
+
                 with(uiState) {
 
                     withContext(kotlinx.coroutines.Dispatchers.Main) {
-
                         when {
                             isLoading -> {}
 
@@ -184,7 +187,8 @@ class MovieTrailerFragment : Fragment(R.layout.fragment_movie_trailer) {
 
     fun movieCastsRecyclerView(binding: FragmentMovieTrailerBinding) {
         binding.recyclerviewMovieCasts.apply {
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
             adapter = castsAdapter
             binding.progressbar1.setVisibility(View.GONE)
         }

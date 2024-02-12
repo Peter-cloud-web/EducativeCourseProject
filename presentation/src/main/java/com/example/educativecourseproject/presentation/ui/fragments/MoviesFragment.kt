@@ -31,6 +31,7 @@ import com.example.cinemaxv3.viewmodels.upComingMoviesViewModel.UpComingMoviesVi
 import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
