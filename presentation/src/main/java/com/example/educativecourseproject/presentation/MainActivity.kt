@@ -24,6 +24,7 @@ import com.example.educativecourseproject.data.MoviesSyncWorker
 import com.example.educativecourseproject.databinding.ActivityMainBinding
 import com.example.educativecourseproject.databinding.InternetConnectionDialogueBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -43,12 +44,21 @@ class MainActivity : AppCompatActivity() {
     private var isDialogShown = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
         super.onCreate(savedInstanceState)
-
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
+        observeConnectivityChanges()
+        setUpNavigation()
+        checkInternetConnection()
+        lifecycleScope.launch {
+            delay(5000)
+            startBackgroundWork()
+        }
+
+    }
+
+    private fun checkInternetConnection() {
         internetPopup = InternetConnectionDialogueBinding.inflate(layoutInflater)
 
         connectivityDialog = Dialog(this)
@@ -57,47 +67,41 @@ class MainActivity : AppCompatActivity() {
 
         internetPopup.buttonRetry.setOnClickListener {
             hideDialog()
-            Log.d("MAIN ACTIVITY", "Retry button clicked")
 
         }
 
-        observeConnectivityChanges()
-        setUpNavigation()
-        startBackgroundWork()
     }
 
-    private fun startBackgroundWork() {
+
+
+    private fun startBackgroundWork(){
         val constraints = androidx.work.Constraints.Builder()
             .setRequiresCharging(false)
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        val periodicWorkRequest: WorkRequest = PeriodicWorkRequestBuilder<MoviesSyncWorker>(
-            repeatInterval = 2, // Repeat every 1 day
-            repeatIntervalTimeUnit = TimeUnit.SECONDS
+        val periodicWorkRequest:WorkRequest = PeriodicWorkRequestBuilder<MoviesSyncWorker>(
+            repeatInterval = 1, // Repeat every 1 day
+            repeatIntervalTimeUnit = TimeUnit.DAYS
         )
             .setConstraints(constraints)
             .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 5, TimeUnit.SECONDS)
             .build()
 
-        WorkManager.getInstance().enqueue(
+        WorkManager.getInstance(this).enqueue(
             periodicWorkRequest
         )
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(periodicWorkRequest.id)
             .observe(this,
                 Observer { workInfo ->
                     if (workInfo.state == WorkInfo.State.RUNNING) {
-                        println("running")
-                        Log.i("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Running")
+                        Toast.makeText(this, "Updating data", Toast.LENGTH_SHORT).show()
                     } else if (workInfo.state == WorkInfo.State.FAILED) {
-                        println("failed")
-                        Log.i("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Failed")
+                        Toast.makeText(this, "Error when updating data", Toast.LENGTH_SHORT).show()
                     } else if (workInfo.state == WorkInfo.State.SUCCEEDED) {
-                        println("succeed")
-                        Log.i("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Succeed")
+                        Toast.makeText(this, "Data updated successfully", Toast.LENGTH_SHORT).show()
                     } else if (workInfo.state == WorkInfo.State.ENQUEUED) {
-                        println("Enqueud")
-                        Log.i("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Enqued")
+                        Toast.makeText(this, "Task enqueued", Toast.LENGTH_SHORT).show()
                     }
 
                 })
@@ -105,11 +109,9 @@ class MainActivity : AppCompatActivity() {
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(periodicWorkRequest.id)
             .observe(this, Observer { workInfo ->
                 if (workInfo != null && workInfo.state == WorkInfo.State.SUCCEEDED) {
-                    val toast = Toast.makeText(this, "Tsk completed", Toast.LENGTH_SHORT) // in Activity
-                    toast.show()
-                    Log.d("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Task successful")
+                    Toast.makeText(this, "Task completed", Toast.LENGTH_SHORT).show() // in Activity
                 }else{
-                    Log.d("MAIN ACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITYACTIVITY", "Task failed")
+                    Toast.makeText(this, "Error during executing task", Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -151,3 +153,4 @@ class MainActivity : AppCompatActivity() {
         mainBinding.bottomNavigationView.setupWithNavController(navController)
     }
 }
+
