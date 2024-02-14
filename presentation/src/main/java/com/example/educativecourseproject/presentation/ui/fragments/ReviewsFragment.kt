@@ -1,60 +1,86 @@
 package com.example.educativecourseproject.presentation.ui.fragments
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
+import com.example.cinemaxv3.models.responses.Review
+import com.example.cinemaxv3.view.ui.adapter.MovieReviewsAdapter
+import com.example.cinemaxv3.viewmodels.movieReviewsViewModel.MovieReviewsViewModel
 import com.example.educativecourseproject.R
+import com.example.educativecourseproject.databinding.FragmentReviewsBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class ReviewsFragment : Fragment(R.layout.fragment_reviews) {
+    private val movieReviewsViewModel: MovieReviewsViewModel by viewModels()
+    private lateinit var reviewAdapter: MovieReviewsAdapter
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ReviewsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ReviewsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentReviewsBinding.bind(view)
+        val id = arguments?.getInt("movieId")
+        val imageLoader = ImageLoader(requireContext())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        val actionbar = (activity as AppCompatActivity).supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setBackgroundDrawable(context?.let {
+                ContextCompat.getColor(
+                    it,
+                    R.color.black
+                )
+            }?.let { ColorDrawable(it) })
+            title = "Reviews"
         }
+
+        reviewAdapter = MovieReviewsAdapter(imageLoader)
+
+        if (id != null) {
+            movieReviewsViewModel.getReviews(id)
+        }
+        loadMovieReviews()
+        showMovies(binding)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reviews, container, false)
-    }
+    private fun loadMovieReviews() {
+        val reviewsList = mutableListOf<Review>()
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ReviewsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ReviewsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        movieReviewsViewModel.movieReviews.observe(viewLifecycleOwner, Observer { uiState ->
+            with(uiState) {
+
+                when {
+                    isLoading -> {}
+
+                    reviews != null -> {
+                        uiState.reviews?.observe(viewLifecycleOwner, Observer { reviews ->
+                            lifecycleScope.launch {
+                                reviewsList.addAll(listOf(reviews))
+                                reviewAdapter.comparator.submitList(reviewsList)
+                            }
+                        })
+
+                    }
                 }
+
             }
+        })
+
+
+    }
+
+    private fun showMovies(binding: FragmentReviewsBinding) {
+        binding.recyclerviewReviews.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = reviewAdapter
+        }
     }
 }

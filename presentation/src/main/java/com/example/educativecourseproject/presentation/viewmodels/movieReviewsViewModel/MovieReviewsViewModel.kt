@@ -1,6 +1,8 @@
 package com.example.cinemaxv3.viewmodels.movieReviewsViewModel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.load.HttpException
 import com.example.domain.use_cases.movieReviews_usecase.MovieReviewUseCase
@@ -15,14 +17,14 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieReviewsViewModel @Inject constructor(private val movieReviewUseCase: MovieReviewUseCase) :
     ViewModel() {
-    private val _movieReviews = MutableStateFlow(MovieReviewsUiStates())
-    val movieReviews  = _movieReviews.asStateFlow()
+    private val _movieReviews = MutableLiveData(MovieReviewsUiStates())
+    val movieReviews  = _movieReviews
     fun getReviews(id: Int){
         try {
             viewModelScope.launch {
                 _movieReviews.value = MovieReviewsUiStates(isLoading = true)
                 val response = movieReviewUseCase(id).data?.review?.asFlow()
-                _movieReviews.value = MovieReviewsUiStates(reviews = response!!)
+                _movieReviews.value = MovieReviewsUiStates(reviews = response!!.asLiveData())
             }
 
         }catch (e:Exception){
