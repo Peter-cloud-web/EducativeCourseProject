@@ -35,10 +35,9 @@ class TopRatedMovieViewModel @Inject constructor(
         try {
             _topRatedMovieStates.value = UiStates(isLoading = true)
             val pagingData = getTopRatedMoviesUseCase().cachedIn(viewModelScope).asLiveData()
-            _topRatedMovieStates.value = UiStates(movies = pagingData)
+            _topRatedMovieStates.postValue(UiStates(movies = pagingData))
         } catch (e: Exception) {
-            _topRatedMovieStates.value =
-                UiStates(error = handleTopRatedMoviesErrors(e))
+            _topRatedMovieStates.postValue(UiStates(error = handleTopRatedMoviesErrors(e)))
         }
     }
 

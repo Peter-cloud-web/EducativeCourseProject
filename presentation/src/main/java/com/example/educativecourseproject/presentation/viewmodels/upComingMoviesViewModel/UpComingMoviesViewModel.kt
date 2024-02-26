@@ -32,10 +32,10 @@ class UpComingMoviesViewModel @Inject constructor(
         try {
             _upComingMoviesState.value = UiStates(isLoading = true)
             val response = getUpComingMoviesUseCase().cachedIn(viewModelScope).asLiveData()
-            _upComingMoviesState.value = UiStates(movies = response)
+            _upComingMoviesState.postValue(UiStates(movies = response))
         } catch (e: Exception) {
-            _upComingMoviesState.value =
-                UiStates(error = handleUpComingMoviesErrors(e))
+            _upComingMoviesState.postValue(UiStates(error = handleUpComingMoviesErrors(e)))
+
         }
     }
 
