@@ -32,6 +32,7 @@ import com.example.educativecourseproject.R
 import com.example.educativecourseproject.databinding.FragmentMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -59,7 +60,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         initMembers(imageLoader)
         checkNetworkConnectivity(binding)
         setUpViews(binding)
-        fetchMovies()
+        fetchMovies(binding)
         displayPopularMovie(binding)
         recyclerViewOnClick()
 
@@ -101,15 +102,16 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-    private fun fetchMovies() {
+    private fun fetchMovies(binding:FragmentMoviesBinding) {
 
         topRatedMovieViewModel.topRatedMovieUiState.observe(
             viewLifecycleOwner,
             Observer { uiState ->
                 with(uiState) {
                     when {
-                        isLoading -> {}
+                        isLoading -> {
 
+                        }
                         movies != null -> {
                             uiState.movies?.observe(
                                 viewLifecycleOwner,
@@ -117,7 +119,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                                     lifecycleScope.launch {
                                         topRatedMoviesAdapter.submitData(topratedMoviesPagingData)
                                     }
-
                                 })
                         }
 
@@ -137,13 +138,15 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             Observer { uiState ->
                 with(uiState) {
                     when {
-                        isLoading -> {}
+                        isLoading -> {binding.progressBar3.visibility = View.VISIBLE}
                         movies != null -> {
                             uiState.movies?.observe(viewLifecycleOwner, Observer { pagingData ->
                                 lifecycleScope.launch {
                                     popularMovieAdapter.submitData(pagingData)
+
                                 }
                             })
+                            binding.progressBar3.visibility = View.GONE
                         }
 
                         error != null -> {

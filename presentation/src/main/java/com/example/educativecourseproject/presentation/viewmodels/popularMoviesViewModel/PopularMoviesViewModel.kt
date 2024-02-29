@@ -12,8 +12,8 @@ import com.example.domain.use_cases.popularMovies_usecase.PopularMoviesUseCase
 import com.example.educativecourseproject.data.mappers.Mappers.toPopularMovie
 import com.example.educativecourseproject.data.util.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
@@ -33,19 +33,22 @@ class PopularMoviesViewModel @Inject constructor(
         }
 
     init {
-        getPopularMovies()
+        viewModelScope.launch {
+            getPopularMovies()
+        }
     }
 
-    fun getPopularMovies() {
-            try {
-                _popularMovieStates.value = UiStates(isLoading = true)
-                val pagingData =
-                    getPopularMoviesUseCase().cachedIn(viewModelScope).asLiveData()
-                _popularMovieStates.value = UiStates(movies = pagingData)
-            } catch (e: Exception) {
-                _popularMovieStates.value =
-                    UiStates(error = handlePopularMoviesErrors(e))
-            }
+    suspend fun getPopularMovies() {
+        try {
+            _popularMovieStates.postValue(UiStates(isLoading = true))
+            delay(5000)
+            val pagingData =
+                getPopularMoviesUseCase().cachedIn(viewModelScope).asLiveData()
+            _popularMovieStates.postValue(UiStates(movies = pagingData))
+        } catch (e: Exception) {
+            _popularMovieStates.value =
+                UiStates(error = handlePopularMoviesErrors(e))
+        }
     }
 
     private fun handlePopularMoviesErrors(e: Exception): String {

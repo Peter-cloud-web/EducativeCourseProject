@@ -14,6 +14,8 @@ import com.example.domain.use_cases.top_rated_movies_usecase.TopRatedMoviesUseCa
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 import java.io.IOException
 import javax.inject.Inject
 
@@ -33,9 +35,9 @@ class TopRatedMovieViewModel @Inject constructor(
     @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
     fun getTopRatedMovies() {
         try {
-            _topRatedMovieStates.value = UiStates(isLoading = true)
-            val pagingData = getTopRatedMoviesUseCase().cachedIn(viewModelScope).asLiveData()
-            _topRatedMovieStates.postValue(UiStates(movies = pagingData))
+                _topRatedMovieStates.value = UiStates(isLoading = true)
+                val pagingData = getTopRatedMoviesUseCase().cachedIn(viewModelScope).asLiveData()
+                _topRatedMovieStates.postValue(UiStates(movies = pagingData))
         } catch (e: Exception) {
             _topRatedMovieStates.postValue(UiStates(error = handleTopRatedMoviesErrors(e)))
         }
