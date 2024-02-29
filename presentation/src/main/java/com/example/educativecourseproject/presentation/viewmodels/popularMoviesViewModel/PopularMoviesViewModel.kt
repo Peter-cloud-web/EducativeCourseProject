@@ -1,5 +1,6 @@
 package com.example.cinemaxv3.viewmodels.popularMoviesViewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -10,7 +11,6 @@ import com.example.cinemaxv3.models.Movie
 import com.example.domain.repository.RemoteMoviesRepository
 import com.example.domain.use_cases.popularMovies_usecase.PopularMoviesUseCase
 import com.example.educativecourseproject.data.mappers.Mappers.toPopularMovie
-import com.example.educativecourseproject.data.util.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,11 +21,11 @@ import javax.inject.Inject
 class PopularMoviesViewModel @Inject constructor(
     private val getPopularMoviesUseCase: PopularMoviesUseCase,
     private val repository: RemoteMoviesRepository,
-    private val dispatchers: DispatcherProvider
 ) : ViewModel() {
 
     private val _popularMovieStates = MutableLiveData(UiStates<Movie>())
-    val popularMoviesUiState = _popularMovieStates
+    val popularMoviesUiState: LiveData<UiStates<Movie>> = _popularMovieStates
+
 
     suspend fun getTopRatedMovie(): List<Movie>? =
         repository.getPopularMovies(1).data?.results?.map {

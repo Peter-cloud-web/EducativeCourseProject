@@ -1,5 +1,6 @@
 package com.example.cinemaxv3.viewmodels.upComingMoviesViewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -22,7 +23,7 @@ class UpComingMoviesViewModel @Inject constructor(
     ) : ViewModel() {
 
     private val _upComingMoviesState = MutableLiveData(UiStates<UpComingMovies>())
-    val upComingMoviesState = _upComingMoviesState
+    val upComingMoviesState: LiveData<UiStates<UpComingMovies>> = _upComingMoviesState
 
     init {
         getUpComingMovies()

@@ -3,6 +3,7 @@ package com.example.cinemaxv3.viewmodels.topRatedMovieViewModel
 import android.net.http.HttpException
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -26,7 +27,7 @@ class TopRatedMovieViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _topRatedMovieStates = MutableLiveData(UiStates<TopRatedMovies>())
-    val topRatedMovieUiState = _topRatedMovieStates
+    val topRatedMovieUiState: LiveData<UiStates<TopRatedMovies>> get() =  _topRatedMovieStates
 
     init {
         getTopRatedMovies()
