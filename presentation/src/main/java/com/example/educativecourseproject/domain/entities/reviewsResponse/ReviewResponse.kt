@@ -19,16 +19,13 @@ data class ReviewsResponse(
 
 @Serializable
 data class Review(
-    @SerialName("id")
-    val id: String,
-    @SerialName("author_details")
-    val authorDetails: AuthorDetails,
-    @SerialName("content")
-    val content: String,
-    @SerialName("created_at")
-    val createdOn: String,
-    @SerialName("url")
-    val url: String
+    @SerialName("author"         ) var author        : String?        = null,
+    @SerialName("author_details" ) var authorDetails : AuthorDetails,
+    @SerialName("content"        ) var content       : String?        = null,
+    @SerialName("created_at"     ) var createdAt     : String?        = null,
+    @SerialName("id"             ) var id            : String?        = null,
+    @SerialName("updated_at"     ) var updatedAt     : String?        = null,
+    @SerialName("url"            ) var url           : String?        = null
 )
 
 @Serializable
